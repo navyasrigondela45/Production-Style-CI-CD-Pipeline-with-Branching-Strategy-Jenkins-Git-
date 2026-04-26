@@ -5,6 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netflix Clone - Stream Movies & TV Shows</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for Mahesh Babu Birthday Special banner - preserves all original design */
+        .birthday-special {
+            background: linear-gradient(90deg, #e50914 0%, #b20710 100%);
+            margin: 30px 4% 20px 4%;
+            border-radius: 12px;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+        }
+        
+        .birthday-special:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.5);
+        }
+        
+        .birthday-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .birthday-icon {
+            font-size: 48px;
+            animation: bounce 1s ease infinite;
+        }
+        
+        .birthday-text h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: white;
+        }
+        
+        .birthday-text p {
+            color: #ffe6e6;
+            font-size: 0.9rem;
+        }
+        
+        .birthday-btn {
+            background-color: white;
+            border: none;
+            color: #e50914;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .birthday-btn:hover {
+            transform: scale(1.05);
+            background-color: #f5f5f5;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        @media (max-width: 768px) {
+            .birthday-special {
+                padding: 15px 20px;
+            }
+            .birthday-icon {
+                font-size: 32px;
+            }
+            .birthday-text h3 {
+                font-size: 1.2rem;
+            }
+            .birthday-btn {
+                padding: 8px 18px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -29,6 +113,18 @@
                 <button class="cta-button">Watch Now For Free</button>
             </div>
         </section>
+
+        <!-- Mahesh Babu Birthday Special Banner -->
+        <div class="birthday-special" onclick="alert('🎂 Happy Birthday Mahesh Babu! 🎉 Stream his blockbuster hits all week long.')">
+            <div class="birthday-content">
+                <div class="birthday-icon">🎂🎬</div>
+                <div class="birthday-text">
+                    <h3>🎉 Mahesh Babu Birthday Special! 🎉</h3>
+                    <p>Celebrate the Superstar's birthday with exclusive collection of his biggest blockbusters. Streaming now!</p>
+                </div>
+            </div>
+            <button class="birthday-btn" onclick="event.stopPropagation(); alert('🎬 Happy Birthday Mahesh Babu! Enjoy his epic movies like Pokiri, Maharshi, Sarkaru Vaari Paata and more!')">Celebrate Now →</button>
+        </div>
 
         <section class="movie-row">
             <h2>Trending Now</h2>
