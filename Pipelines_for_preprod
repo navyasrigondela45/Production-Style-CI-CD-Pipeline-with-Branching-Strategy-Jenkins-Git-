@@ -1,0 +1,103 @@
+🚀 CI/CD Pipeline for Dev 🚀
+
+pipeline {
+    agent {
+        node {
+            label 'dev'
+        }
+    }
+
+    tools {
+        maven "MyMaven"
+    }
+
+    stages {
+        stage('Code') {
+            steps {
+                git branch: 'feature/UI_release', url: 'https://github.com/navyasrigondela45/Production-Style-CI-CD-Pipeline-with-Branching-Strategy-Jenkins-Git-.git'
+            }
+        }
+          stage('Build') {
+            steps {
+               // script{
+                    // if(env.BRANCH_NAME == "main") {
+                        sh 'mvn clean package'
+                   // } }
+                   }
+}
+        stage('Deploy') {
+        //    input {                message 'Please approve to deploy'  }
+            steps {
+               deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'Tomcat_Cred', path: '', url: 'http://51.21.223.233:8080/')], contextPath: 'Dev_NetflixClone', war: 'target/*.war'
+            }
+}
+
+}
+post {
+     
+        failure {
+            mail to: 'navyasrigondela45@gmail.com',
+            subject: "Build Status: ${currentBuild.fullDisplayName}",
+            from: 'Jenkins CI <navyasrigondela45@gmail.com>',
+            body: "The build ${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}. View logs at: ${env.BUILD_URL}"
+        }
+        aborted {
+            mail to: 'navyasrigondela45@gmail.com',
+            subject: "Build Status: ${currentBuild.fullDisplayName}",
+            from: 'Jenkins CI <navyasrigondela45@gmail.com>',
+            body: "The build ${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}. View logs at: ${env.BUILD_URL}"
+        }
+    }
+}
+
+🚀 CI/CD Pipeline for Test 🚀
+
+pipeline {
+    agent {
+        node {
+            label 'dev'
+        }
+    }
+
+    tools {
+        maven "MyMaven"
+    }
+
+    stages {
+        stage('Code') {
+            steps {
+                git branch: 'Test-branch', url: 'https://github.com/navyasrigondela45/Production-Style-CI-CD-Pipeline-with-Branching-Strategy-Jenkins-Git-.git'
+            }
+        }
+          stage('Build') {
+            steps {
+               // script{
+                    // if(env.BRANCH_NAME == "main") {
+                        sh 'mvn clean package'
+                   // } }
+                   }
+}
+        stage('Deploy') {
+        //    input {                message 'Please approve to deploy'  }
+            steps {
+               deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'Tomcat_Cred', path: '', url: 'http://13.51.242.196:8080/')], contextPath: 'Test_NetflixClone', war: 'target/*.war'
+            }
+}
+
+}
+post {
+     
+        failure {
+            mail to: 'navyasrigondela45@gmail.com',
+            subject: "Build Status: ${currentBuild.fullDisplayName}",
+            from: 'Jenkins CI <navyasrigondela45@gmail.com>',
+            body: "The build ${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}. View logs at: ${env.BUILD_URL}"
+        }
+        aborted {
+            mail to: 'navyasrigondela45@gmail.com',
+            subject: "Build Status: ${currentBuild.fullDisplayName}",
+            from: 'Jenkins CI <navyasrigondela45@gmail.com>',
+            body: "The build ${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}. View logs at: ${env.BUILD_URL}"
+        }
+    }
+}
