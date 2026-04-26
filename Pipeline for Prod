@@ -1,0 +1,58 @@
+# 🚀 CI/CD Pipeline for Prod
+
+pipeline {
+    agent {
+        node {
+            label 'prod'
+        }
+    }
+
+    tools {
+        maven "MyMaven"
+    }
+
+    stages {
+        stage('Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/navyasrigondela45/Production-Style-CI-CD-Pipeline-with-Branching-Strategy-Jenkins-Git-.git'
+            }
+        }
+          stage('Build') {
+            steps {
+               // script{
+                    // if(env.BRANCH_NAME == "main") {
+                        sh 'mvn clean package'
+                   // } }
+                   }
+}
+stage ('Artifact') {
+    steps {
+        nexusArtifactUploader artifacts: [[artifactId: 'NetflixClone', classifier: '', file: 'target/NetflixClone.war', type: 'war']], credentialsId: 'Nexus_cred', groupId: 'com.example', nexusUrl: '16.171.255.20:8081/', nexusVersion: 'nexus3', protocol: 'http', repository: 'myrepo', version: '1.0'
+    }
+}
+         stage('Deploy') {
+            input {
+                message 'Please approve to deploy'
+            }
+            steps {
+               deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'Tomcat_Cred', path: '', url: 'http://13.53.71.208:8080/')], contextPath: 'NetflixClone', war: 'target/*.war'
+            }
+}
+
+}
+post {
+     
+        failure {
+            mail to: 'navyasrigondela45@gmail.com',
+            subject: "Build Status: ${currentBuild.fullDisplayName}",
+            from: 'Jenkins CI <navyasrigondela45@gmail.com>',
+            body: "The build ${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}. View logs at: ${env.BUILD_URL}"
+        }
+        aborted {
+            mail to: 'navyasrigondela45@gmail.com',
+            subject: "Build Status: ${currentBuild.fullDisplayName}",
+            from: 'Jenkins CI <navyasrigondela45@gmail.com>',
+            body: "The build ${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}. View logs at: ${env.BUILD_URL}"
+        }
+    }
+}
