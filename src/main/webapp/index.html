@@ -1,92 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Clone - Stream Movies & TV Shows</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netflix Clone</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #141414;
+    color: white;
+}
+
+/* HEADER */
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+    padding: 15px 40px;
+    z-index: 1000;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo h1 {
+    color: #e50914;
+    margin: 0;
+    font-size: 28px;
+}
+
+.nav-links a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* HERO */
+.hero {
+    height: 90vh;
+    background: linear-gradient(to right, rgba(0,0,0,0.8), transparent),
+                url('images/banner.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    padding: 0 60px;
+}
+
+.hero-content {
+    max-width: 500px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    background-color: #e50914;
+    border: none;
+    padding: 12px 25px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.cta-button:hover {
+    background-color: #f40612;
+}
+
+/* MOVIE ROW */
+.movie-row {
+    padding: 20px 40px;
+}
+
+.movie-row h2 {
+    margin-bottom: 15px;
+}
+
+/* HORIZONTAL SCROLL */
+.movie-grid {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+}
+
+.movie-grid::-webkit-scrollbar {
+    display: none;
+}
+
+/* CARD */
+.movie-card {
+    min-width: 200px;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* HOVER EFFECT */
+.movie-card:hover {
+    transform: scale(1.1);
+}
+
+.movie-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.movie-card:hover::after {
+    opacity: 1;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: gray;
+}
+
+/* MAIN SPACING */
+main {
+    padding-top: 80px;
+}
+</style>
 </head>
+
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <h1>NETFLIX</h1>
-            </div>
-            <div class="nav-links">
-                <a href="#">Home</a>
-                <a href="#">TV Shows</a>
-                <a href="#">Movies</a>
-                <a href="#">My List</a>
-            </div>
-        </nav>
-    </header>
 
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Unlimited Movies, TV Shows, and More</h1>
-                <p>Watch anywhere. Cancel anytime.</p>
-                <button class="cta-button">Watch Now For Free</button>
-            </div>
-        </section>
+<header>
+    <nav>
+        <div class="logo">
+            <h1>NETFLIX</h1>
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">TV Shows</a>
+            <a href="#">Movies</a>
+            <a href="#">My List</a>
+        </div>
+    </nav>
+</header>
 
-        <section class="movie-row">
-            <h2>Trending Now</h2>
-            <div class="movie-grid">
-                <div class="movie-card">
-                    <img src="images/movie1.jpg" alt="Movie 1">
-                    <div class="movie-info">
-                        <h3>The Crown</h3>
-                        <p>Drama • 2023</p>
-                    </div>
-                </div>
-                <div class="movie-card">
-                    <img src="images/movie2.jpg" alt="Movie 2">
-                    <div class="movie-info">
-                        <h3>Stranger Things</h3>
-                        <p>Sci-Fi • 2022</p>
-                    </div>
-                </div>
-                <div class="movie-card">
-                    <img src="images/movie3.jpg" alt="Movie 3">
-                    <div class="movie-info">
-                        <h3>The Witcher</h3>
-                        <p>Fantasy • 2023</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+<main>
 
-        <section class="movie-row">
-            <h2>Popular on Netflix</h2>
-            <div class="movie-grid">
-                <div class="movie-card">
-                    <img src="images/movie1.jpg" alt="Movie 1">
-                    <div class="movie-info">
-                        <h3>Wednesday</h3>
-                        <p>Comedy • 2022</p>
-                    </div>
-                </div>
-                <div class="movie-card">
-                    <img src="images/movie2.jpg" alt="Movie 2">
-                    <div class="movie-info">
-                        <h3>Money Heist</h3>
-                        <p>Action • 2021</p>
-                    </div>
-                </div>
-                <div class="movie-card">
-                    <img src="images/movie3.jpg" alt="Movie 3">
-                    <div class="movie-info">
-                        <h3>Bridgerton</h3>
-                        <p>Romance • 2022</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Unlimited Movies, TV Shows, and More</h1>
+        <p>Watch anywhere. Cancel anytime.</p>
+        <button class="cta-button">▶ Play</button>
+    </div>
+</section>
 
-    <footer>
-        <p>&copy; 2024 Netflix Clone. All rights reserved.</p>
-    </footer>
+<!-- TRENDING -->
+<section class="movie-row">
+    <h2>Trending Now</h2>
+    <div class="movie-grid">
+        <div class="movie-card">
+            <img src="images/movie1.jpg" alt="Movie 1">
+        </div>
+        <div class="movie-card">
+            <img src="images/movie2.jpg" alt="Movie 2">
+        </div>
+        <div class="movie-card">
+            <img src="images/movie3.jpg" alt="Movie 3">
+        </div>
+    </div>
+</section>
+
+<!-- POPULAR -->
+<section class="movie-row">
+    <h2>Popular on Netflix</h2>
+    <div class="movie-grid">
+        <div class="movie-card">
+            <img src="images/movie1.jpg" alt="Movie 1">
+        </div>
+        <div class="movie-card">
+            <img src="images/movie2.jpg" alt="Movie 2">
+        </div>
+        <div class="movie-card">
+            <img src="images/movie3.jpg" alt="Movie 3">
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <p>Netflix Clone UI</p>
+</footer>
+
 </body>
 </html>
