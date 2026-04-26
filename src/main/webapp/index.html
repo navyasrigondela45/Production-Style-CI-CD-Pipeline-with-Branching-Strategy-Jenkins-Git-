@@ -2,743 +2,187 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Netflix Clone - Mahesh Babu Hits | Stream Blockbusters</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Clone - Stream Movies & TV Shows</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #141414;
-            font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            color: #fff;
-            overflow-x: hidden;
-        }
-
-        /* Custom Netflix scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #222;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #e50914;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #f40612;
-        }
-
-        /* Header / Navbar - fixed with gradient */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 100;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
-            transition: background 0.3s ease;
-            padding: 0 4%;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 68px;
-        }
-
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            color: #e50914;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .logo h1:hover {
-            transform: scale(1.02);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #e5e5e5;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: #b3b3b3;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .nav-right i {
-            font-size: 1.2rem;
-            color: white;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .nav-right i:hover {
-            color: #b3b3b3;
-        }
-
-        .avatar {
-            width: 32px;
-            height: 32px;
-            background: #e50914;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        /* Hero Section with Mahesh Babu Spotlight */
-        .hero {
-            position: relative;
-            height: 85vh;
-            min-height: 580px;
-            background: linear-gradient(77deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.4) 100%);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            object-fit: cover;
-            object-position: top 20% center;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 150px;
-            background: linear-gradient(0deg, #141414 0%, transparent 100%);
-            z-index: -1;
-        }
-
-        .hero-content {
-            max-width: 650px;
-            margin-left: 4%;
-            padding: 0 20px;
-            z-index: 2;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(229, 9, 20, 0.9);
-            padding: 4px 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-radius: 4px;
-            margin-bottom: 16px;
-            letter-spacing: 1px;
-        }
-
-        .hero-content h1 {
-            font-size: 3.8rem;
-            font-weight: 800;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
-            margin-bottom: 0.5rem;
-            line-height: 1.1;
-        }
-
-        .hero-tagline {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #f5f5f5;
-            margin-bottom: 1rem;
-            text-shadow: 1px 1px 2px black;
-        }
-
-        .hero-description {
-            font-size: 1rem;
-            line-height: 1.4;
-            margin-bottom: 1.5rem;
-            color: #ddd;
-            max-width: 550px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            background-color: #fff;
-            border: none;
-            color: #000;
-            padding: 10px 28px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 4px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .btn-primary:hover {
-            background-color: rgba(255,255,255,0.85);
-            transform: scale(1.02);
-        }
-
-        .btn-secondary {
-            background-color: rgba(109, 109, 110, 0.7);
-            border: none;
-            color: #fff;
-            padding: 10px 28px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 4px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(4px);
-            transition: 0.2s;
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(109, 109, 110, 0.5);
-        }
-
-        /* Movie Rows */
-        .movie-row {
-            margin: 45px 0 35px 0;
-            padding-left: 4%;
-            position: relative;
-        }
-
-        .row-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 1rem;
-            padding-right: 4%;
-        }
-
-        .row-header h2 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            letter-spacing: -0.2px;
-        }
-
-        .row-header h2 i {
-            color: #e50914;
-            margin-right: 8px;
-            font-size: 1.4rem;
-        }
-
-        /* Horizontal scroll grid */
-        .movie-grid {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding-bottom: 20px;
-            cursor: grab;
-            scrollbar-width: thin;
-        }
-
-        .movie-grid::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .movie-grid:active {
-            cursor: grabbing;
-        }
-
-        .movie-card {
-            flex: 0 0 auto;
-            width: 220px;
-            transition: transform 0.3s ease, box-shadow 0.2s;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: #1f1f1f;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .movie-card:hover {
-            transform: scale(1.08);
-            z-index: 10;
-            box-shadow: 0 15px 25px rgba(0,0,0,0.6);
-        }
-
-        .movie-card img {
-            width: 100%;
-            height: 310px;
-            object-fit: cover;
-            display: block;
-            transition: opacity 0.2s;
-        }
-
-        .movie-info {
-            padding: 12px 10px;
-            background: linear-gradient(to top, #181818, #202020);
-        }
-
-        .movie-info h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .movie-info p {
-            font-size: 0.8rem;
-            color: #aaa;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .rating {
-            color: #46d369;
-            font-weight: 500;
-        }
-
-        /* Mahesh Babu Special Banner */
-        .mahesh-spotlight {
-            background: linear-gradient(90deg, #0a0a0a 0%, #1a0a0a 100%);
+        /* Additional styles for Mahesh Babu Birthday Special banner - preserves all original design */
+        .birthday-special {
+            background: linear-gradient(90deg, #e50914 0%, #b20710 100%);
             margin: 30px 4% 20px 4%;
             border-radius: 12px;
-            padding: 30px 25px;
+            padding: 20px 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 20px;
-            border-left: 5px solid #e50914;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
         }
-
-        .spotlight-text h3 {
-            font-size: 1.8rem;
+        
+        .birthday-special:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(229, 9, 20, 0.5);
+        }
+        
+        .birthday-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .birthday-icon {
+            font-size: 48px;
+            animation: bounce 1s ease infinite;
+        }
+        
+        .birthday-text h3 {
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .spotlight-text h3 i {
-            color: #e50914;
-            margin-right: 10px;
-        }
-
-        .spotlight-text p {
-            color: #ccc;
-            max-width: 500px;
-        }
-
-        .spotlight-btn {
-            background: #e50914;
-            border: none;
+            margin-bottom: 5px;
             color: white;
-            padding: 12px 32px;
-            font-weight: 600;
+        }
+        
+        .birthday-text p {
+            color: #ffe6e6;
+            font-size: 0.9rem;
+        }
+        
+        .birthday-btn {
+            background-color: white;
+            border: none;
+            color: #e50914;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 700;
             border-radius: 4px;
             cursor: pointer;
-            transition: 0.2s;
-            font-size: 1rem;
+            transition: all 0.2s ease;
         }
-
-        .spotlight-btn:hover {
-            background: #f40612;
-            transform: scale(1.02);
+        
+        .birthday-btn:hover {
+            transform: scale(1.05);
+            background-color: #f5f5f5;
         }
-
-        footer {
-            border-top: 1px solid #222;
-            padding: 2rem 4%;
-            text-align: center;
-            color: #757575;
-            font-size: 0.8rem;
-            margin-top: 50px;
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
+        
         @media (max-width: 768px) {
-            .hero {
-                height: 70vh;
+            .birthday-special {
+                padding: 15px 20px;
             }
-            .hero-content h1 {
-                font-size: 2.2rem;
+            .birthday-icon {
+                font-size: 32px;
             }
-            .hero-tagline {
-                font-size: 1rem;
+            .birthday-text h3 {
+                font-size: 1.2rem;
             }
-            .movie-card {
-                width: 160px;
-            }
-            .movie-card img {
-                height: 230px;
-            }
-            .row-header h2 {
-                font-size: 1.3rem;
-            }
-            .mahesh-spotlight {
-                flex-direction: column;
-                text-align: center;
+            .birthday-btn {
+                padding: 8px 18px;
+                font-size: 0.9rem;
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>NETFLIX</h1>
+            </div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">TV Shows</a>
+                <a href="#">Movies</a>
+                <a href="#">My List</a>
+            </div>
+        </nav>
+    </header>
 
-<header id="navbar">
-    <nav>
-        <div class="logo">
-            <h1>NETFLIX</h1>
-        </div>
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">TV Shows</a>
-            <a href="#">Movies</a>
-            <a href="#">My List</a>
-            <a href="#">Mahesh Babu Hits</a>
-        </div>
-        <div class="nav-right">
-            <i class="fas fa-search"></i>
-            <i class="fas fa-bell"></i>
-            <div class="avatar">
-                <i class="fas fa-user" style="color: white; font-size: 14px;"></i>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Unlimited Movies, TV Shows, and More</h1>
+                <p>Watch anywhere. Cancel anytime.</p>
+                <button class="cta-button">Watch Now For Free</button>
             </div>
-        </div>
-    </nav>
-</header>
+        </section>
 
-<main>
-    <!-- Hero Section with Mahesh Babu Spotlight (using banner.jpg as background) -->
-    <section class="hero">
-        <img class="hero-bg" src="src/main/images/banner.jpg" alt="Mahesh Babu Blockbusters" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.hero').style.background='linear-gradient(77deg, #000000 0%, #2a0a0a 100%)';">
-        <div class="hero-content">
-            <span class="hero-badge">SUPERSTAR SPECIAL</span>
-            <h1>MAHESH BABU</h1>
-            <div class="hero-tagline">The Prince of Tollywood</div>
-            <div class="hero-description">
-                Experience the biggest blockbusters from the legend himself. From action-packed thrillers to heartwarming dramas — all in one place.
+        <!-- Mahesh Babu Birthday Special Banner -->
+        <div class="birthday-special" onclick="alert('🎂 Happy Birthday Mahesh Babu! 🎉 Stream his blockbuster hits all week long.')">
+            <div class="birthday-content">
+                <div class="birthday-icon">🎂🎬</div>
+                <div class="birthday-text">
+                    <h3>🎉 Mahesh Babu Birthday Special! 🎉</h3>
+                    <p>Celebrate the Superstar's birthday with exclusive collection of his biggest blockbusters. Streaming now!</p>
+                </div>
             </div>
-            <div class="hero-buttons">
-                <button class="btn-primary"><i class="fas fa-play"></i> Watch Now</button>
-                <button class="btn-secondary"><i class="fas fa-info-circle"></i> More Info</button>
-            </div>
+            <button class="birthday-btn" onclick="event.stopPropagation(); alert('🎬 Happy Birthday Mahesh Babu! Enjoy his epic movies like Pokiri, Maharshi, Sarkaru Vaari Paata and more!')">Celebrate Now →</button>
         </div>
-    </section>
 
-    <!-- Mahesh Babu Exclusive Hits Row (first showcase) -->
-    <div class="movie-row">
-        <div class="row-header">
-            <h2><i class="fas fa-crown"></i> Mahesh Babu: Blockbuster Hits</h2>
-            <div class="row-controls" style="display: flex; gap: 8px;">
-                <button class="scroll-btn left" data-row="maheshRow"><i class="fas fa-chevron-left"></i></button>
-                <button class="scroll-btn right" data-row="maheshRow"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </div>
-        <div class="movie-grid" id="maheshRow">
-            <!-- Using movie1.jpg, movie2.jpg, movie3.jpg repeatedly but with Mahesh titles -->
-            <div class="movie-card">
-                <img src="src/main/images/movie1.jpg" alt="Sarkaru Vaari Paata" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Sarkaru+Vaari+Paata'">
-                <div class="movie-info">
-                    <h3>Sarkaru Vaari Paata</h3>
-                    <p>Action • 2022 <span class="rating"><i class="fas fa-star"></i> 4.5</span></p>
+        <section class="movie-row">
+            <h2>Trending Now</h2>
+            <div class="movie-grid">
+                <div class="movie-card">
+                    <img src="images/movie1.jpg" alt="Movie 1">
+                    <div class="movie-info">
+                        <h3>The Crown</h3>
+                        <p>Drama • 2023</p>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="images/movie2.jpg" alt="Movie 2">
+                    <div class="movie-info">
+                        <h3>Stranger Things</h3>
+                        <p>Sci-Fi • 2022</p>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="images/movie3.jpg" alt="Movie 3">
+                    <div class="movie-info">
+                        <h3>The Witcher</h3>
+                        <p>Fantasy • 2023</p>
+                    </div>
                 </div>
             </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie2.jpg" alt="Maharshi" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Maharshi'">
-                <div class="movie-info">
-                    <h3>Maharshi</h3>
-                    <p>Drama • 2019 <span class="rating"><i class="fas fa-star"></i> 4.3</span></p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie3.jpg" alt="Bharat Ane Nenu" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Bharat+Ane+Nenu'">
-                <div class="movie-info">
-                    <h3>Bharat Ane Nenu</h3>
-                    <p>Political Drama • 2018 <span class="rating"><i class="fas fa-star"></i> 4.7</span></p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie1.jpg" alt="Srimanthudu" loading="lazy">
-                <div class="movie-info">
-                    <h3>Srimanthudu</h3>
-                    <p>Action • 2015 <span class="rating"><i class="fas fa-star"></i> 4.4</span></p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie2.jpg" alt="Dookudu" loading="lazy">
-                <div class="movie-info">
-                    <h3>Dookudu</h3>
-                    <p>Action Comedy • 2011 <span class="rating"><i class="fas fa-star"></i> 4.6</span></p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie3.jpg" alt="Pokiri" loading="lazy">
-                <div class="movie-info">
-                    <h3>Pokiri</h3>
-                    <p>Action • 2006 <span class="rating"><i class="fas fa-star"></i> 4.8</span></p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie1.jpg" alt="1: Nenokkadine" loading="lazy">
-                <div class="movie-info">
-                    <h3>1: Nenokkadine</h3>
-                    <p>Psychological Thriller • 2014 <span class="rating"><i class="fas fa-star"></i> 4.2</span></p>
-                </div>
-            </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Trending Now Row (with some Mahesh classic references) -->
-    <div class="movie-row">
-        <div class="row-header">
-            <h2><i class="fas fa-fire"></i> Trending Now</h2>
-            <div class="row-controls">
-                <button class="scroll-btn left" data-row="trendingRow"><i class="fas fa-chevron-left"></i></button>
-                <button class="scroll-btn right" data-row="trendingRow"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </div>
-        <div class="movie-grid" id="trendingRow">
-            <div class="movie-card">
-                <img src="src/main/images/movie1.jpg" alt="The Crown">
-                <div class="movie-info">
-                    <h3>The Crown</h3>
-                    <p>Drama • 2023</p>
+        <section class="movie-row">
+            <h2>Popular on Netflix</h2>
+            <div class="movie-grid">
+                <div class="movie-card">
+                    <img src="images/movie1.jpg" alt="Movie 1">
+                    <div class="movie-info">
+                        <h3>Wednesday</h3>
+                        <p>Comedy • 2022</p>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="images/movie2.jpg" alt="Movie 2">
+                    <div class="movie-info">
+                        <h3>Money Heist</h3>
+                        <p>Action • 2021</p>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <img src="images/movie3.jpg" alt="Movie 3">
+                    <div class="movie-info">
+                        <h3>Bridgerton</h3>
+                        <p>Romance • 2022</p>
+                    </div>
                 </div>
             </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie2.jpg" alt="Stranger Things">
-                <div class="movie-info">
-                    <h3>Stranger Things</h3>
-                    <p>Sci-Fi • 2022</p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie3.jpg" alt="The Witcher">
-                <div class="movie-info">
-                    <h3>The Witcher</h3>
-                    <p>Fantasy • 2023</p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie2.jpg" alt="Wednesday">
-                <div class="movie-info">
-                    <h3>Wednesday</h3>
-                    <p>Comedy • 2022</p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie1.jpg" alt="Money Heist">
-                <div class="movie-info">
-                    <h3>Money Heist</h3>
-                    <p>Action • 2021</p>
-                </div>
-            </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <!-- Special Spotlight Banner: Mahesh Babu's Legacy -->
-    <div class="mahesh-spotlight">
-        <div class="spotlight-text">
-            <h3><i class="fas fa-trophy"></i> Mahesh Babu - The Superstar</h3>
-            <p>From "Pokiri" to "Sarkaru Vaari Paata", witness the journey of Telugu cinema's biggest icon. Stream all blockbusters in 4K UHD.</p>
-        </div>
-        <button class="spotlight-btn" onclick="alert('🎬 Enjoy non-stop Mahesh Babu hits!')">Explore Collection <i class="fas fa-arrow-right"></i></button>
-    </div>
-
-    <!-- Popular on Netflix Row + Mahesh Babu's influence -->
-    <div class="movie-row">
-        <div class="row-header">
-            <h2><i class="fas fa-chart-line"></i> Popular on Netflix</h2>
-            <div class="row-controls">
-                <button class="scroll-btn left" data-row="popularRow"><i class="fas fa-chevron-left"></i></button>
-                <button class="scroll-btn right" data-row="popularRow"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </div>
-        <div class="movie-grid" id="popularRow">
-            <div class="movie-card">
-                <img src="src/main/images/movie3.jpg" alt="Wednesday">
-                <div class="movie-info">
-                    <h3>Wednesday</h3>
-                    <p>Comedy • 2022</p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie1.jpg" alt="Money Heist">
-                <div class="movie-info">
-                    <h3>Money Heist</h3>
-                    <p>Action • 2021</p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie2.jpg" alt="Bridgerton">
-                <div class="movie-info">
-                    <h3>Bridgerton</h3>
-                    <p>Romance • 2022</p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie3.jpg" alt="Squid Game">
-                <div class="movie-info">
-                    <h3>Squid Game</h3>
-                    <p>Thriller • 2021</p>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="src/main/images/movie1.jpg" alt="The Queen's Gambit">
-                <div class="movie-info">
-                    <h3>Queen's Gambit</h3>
-                    <p>Drama • 2020</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-
-<footer>
-    <p>&copy; 2024 Netflix Clone | Celebrating Mahesh Babu's Greatest Hits</p>
-    <p style="margin-top: 10px; font-size: 0.7rem;">All images sourced from local assets: banner.jpg, movie1.jpg, movie2.jpg, movie3.jpg</p>
-</footer>
-
-<script>
-    (function() {
-        // Header background on scroll
-        const header = document.querySelector('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.style.backgroundColor = '#0a0a0a';
-                header.style.backgroundImage = 'none';
-            } else {
-                header.style.backgroundColor = 'transparent';
-                header.style.backgroundImage = 'linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, transparent 100%)';
-            }
-        });
-
-        // Grab-to-scroll + button scroll for each row
-        const sliders = document.querySelectorAll('.movie-grid');
-        
-        // add scroll buttons functionality
-        const leftBtns = document.querySelectorAll('.scroll-btn.left');
-        const rightBtns = document.querySelectorAll('.scroll-btn.right');
-        
-        rightBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const rowId = btn.getAttribute('data-row');
-                const row = document.getElementById(rowId);
-                if (row) {
-                    row.scrollBy({ left: 300, behavior: 'smooth' });
-                }
-            });
-        });
-        
-        leftBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const rowId = btn.getAttribute('data-row');
-                const row = document.getElementById(rowId);
-                if (row) {
-                    row.scrollBy({ left: -300, behavior: 'smooth' });
-                }
-            });
-        });
-        
-        // Drag to scroll
-        sliders.forEach(slider => {
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-            
-            slider.addEventListener('mousedown', (e) => {
-                isDown = true;
-                slider.style.cursor = 'grabbing';
-                startX = e.pageX - slider.offsetLeft;
-                scrollLeft = slider.scrollLeft;
-                e.preventDefault();
-            });
-            
-            slider.addEventListener('mouseleave', () => {
-                isDown = false;
-                slider.style.cursor = 'grab';
-            });
-            
-            slider.addEventListener('mouseup', () => {
-                isDown = false;
-                slider.style.cursor = 'grab';
-            });
-            
-            slider.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - slider.offsetLeft;
-                const walk = (x - startX) * 1.5;
-                slider.scrollLeft = scrollLeft - walk;
-            });
-            
-            slider.style.cursor = 'grab';
-        });
-        
-        // Card click effect showing Mahesh Babu pride
-        const cards = document.querySelectorAll('.movie-card');
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
-                const title = card.querySelector('h3')?.innerText || 'Movie';
-                console.log(`Playing ${title} - Mahesh Babu edition`);
-                if(title.includes('Sarkaru') || title.includes('Maharshi') || title.includes('Bharat') || title.includes('Pokiri')) {
-                    alert(`🔥 Now playing: ${title} (Mahesh Babu Blockbuster) - Get ready for the action!`);
-                } else {
-                    alert(`▶️ Playing ${title} - Enjoy streaming!`);
-                }
-            });
-        });
-        
-        // Fix banner fallback
-        const banner = document.querySelector('.hero-bg');
-        if(banner) {
-            banner.addEventListener('error', () => {
-                banner.style.display = 'none';
-                const hero = document.querySelector('.hero');
-                if(hero) hero.style.background = 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)';
-            });
-        }
-    })();
-</script>
+    <footer>
+        <p>&copy; 2024 Netflix Clone. All rights reserved.</p>
+    </footer>
 </body>
 </html>
