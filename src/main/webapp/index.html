@@ -1,152 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Netflix Clone</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Netflix Clone - Stream Movies & TV Shows</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #141414;
-    color: white;
-}
+        body {
+            background-color: #141414;
+            font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+        }
 
-/* HEADER */
-header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
-    padding: 15px 40px;
-    z-index: 1000;
-}
+        /* Custom scrollbar - Netflix style */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        ::-webkit-scrollbar-track {
+            background: #222;
+        }
 
-.logo h1 {
-    color: #e50914;
-    margin: 0;
-    font-size: 28px;
-}
+        ::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 4px;
+        }
 
-.nav-links a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-size: 14px;
-}
+        ::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }
 
-/* HERO */
-.hero {
-    height: 90vh;
-    background: linear-gradient(to right, rgba(0,0,0,0.8), transparent),
-                url('images/banner.jpg') center/cover no-repeat;
-    display: flex;
-    align-items: center;
-    padding: 0 60px;
-}
+        /* Header / Navbar */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+            transition: background-color 0.3s ease;
+            padding: 0 4%;
+        }
 
-.hero-content {
-    max-width: 500px;
-}
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 68px;
+        }
 
-.hero h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
-}
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: #e50914;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
 
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-}
+        .logo h1:hover {
+            transform: scale(1.02);
+        }
 
-.cta-button {
-    background-color: #e50914;
-    border: none;
-    padding: 12px 25px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-}
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
 
-.cta-button:hover {
-    background-color: #f40612;
-}
+        .nav-links a {
+            color: #e5e5e5;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
 
-/* MOVIE ROW */
-.movie-row {
-    padding: 20px 40px;
-}
+        .nav-links a:hover {
+            color: #b3b3b3;
+        }
 
-.movie-row h2 {
-    margin-bottom: 15px;
-}
+        /* HERO SECTION with banner.jpg */
+        .hero {
+            position: relative;
+            height: 85vh;
+            min-height: 550px;
+            background: linear-gradient(77deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.4) 100%);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
 
-/* HORIZONTAL SCROLL */
-.movie-grid {
-    display: flex;
-    gap: 15px;
-    overflow-x: auto;
-}
+        /* Background Image from banner.jpg */
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            object-fit: cover;
+            object-position: top center;
+        }
 
-.movie-grid::-webkit-scrollbar {
-    display: none;
-}
+        /* Overlay gradient for better text readability */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, #141414 0%, transparent 30%, transparent 70%, #141414 100%);
+            z-index: -1;
+        }
 
-/* CARD */
-.movie-card {
-    min-width: 200px;
-    position: relative;
-    transition: transform 0.3s ease;
-}
+        .hero-content {
+            max-width: 650px;
+            margin-left: 4%;
+            padding: 0 20px;
+            z-index: 2;
+            animation: fadeInUp 0.8s ease-out;
+        }
 
-.movie-card img {
-    width: 100%;
-    border-radius: 5px;
-}
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
 
-/* HOVER EFFECT */
-.movie-card:hover {
-    transform: scale(1.1);
-}
+        .hero-content p {
+            font-size: 1.5rem;
+            font-weight: 400;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            margin-bottom: 1.5rem;
+        }
 
-.movie-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-    opacity: 0;
-    transition: 0.3s;
-}
+        .cta-button {
+            background-color: #e50914;
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+            letter-spacing: 0.5px;
+        }
 
-.movie-card:hover::after {
-    opacity: 1;
-}
+        .cta-button:hover {
+            background-color: #f40612;
+            transform: scale(1.02);
+        }
 
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 20px;
-    color: gray;
-}
+        /* Movie Rows */
+        .movie-row {
+            margin: 40px 0 30px 0;
+            padding-left: 4%;
+            position: relative;
+        }
 
-/* MAIN SPACING */
-main {
-    padding-top: 80px;
-}
-</style>
+        .movie-row h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.2px;
+        }
+
+        /* Horizontal scroll grid – real netflix style: overflow scroll */
+        .movie-grid {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 20px;
+            cursor: grab;
+            scrollbar-width: thin;
+        }
+
+        .movie-grid::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .movie-grid:active {
+            cursor: grabbing;
+        }
+
+        .movie-card {
+            flex: 0 0 auto;
+            width: 220px;
+            transition: transform 0.3s ease, box-shadow 0.2s;
+            border-radius: 6px;
+            overflow: hidden;
+            background-color: #1f1f1f;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+            z-index: 10;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.2s;
+        }
+
+        .movie-card:hover img {
+            opacity: 0.9;
+        }
+
+        .movie-info {
+            padding: 12px 8px;
+            background: linear-gradient(to top, #181818, #1f1f1f);
+        }
+
+        .movie-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .movie-info p {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        /* second row slight margin top */
+        .movie-row:last-of-type {
+            margin-bottom: 60px;
+        }
+
+        /* footer */
+        footer {
+            border-top: 1px solid #222;
+            padding: 2rem 4%;
+            text-align: center;
+            color: #757575;
+            font-size: 0.8rem;
+            background-color: #141414;
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .hero {
+                height: 70vh;
+                min-height: 480px;
+            }
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            .cta-button {
+                font-size: 1rem;
+                padding: 0.6rem 1.2rem;
+            }
+            .movie-card {
+                width: 160px;
+            }
+            .movie-card img {
+                height: 220px;
+            }
+            .nav-links {
+                gap: 1rem;
+            }
+            .nav-links a {
+                font-size: 0.8rem;
+            }
+            .logo h1 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 1.6rem;
+            }
+            .hero-content p {
+                font-size: 0.9rem;
+            }
+            .movie-card {
+                width: 140px;
+            }
+            .movie-card img {
+                height: 190px;
+            }
+            .movie-info h3 {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Hover effect for cta btn */
+        .cta-button:active {
+            transform: scale(0.98);
+        }
+
+        /* smooth loading for images fallback */
+        img {
+            background: #2a2a2a;
+        }
+    </style>
 </head>
-
 <body>
 
 <header>
@@ -164,53 +351,215 @@ main {
 </header>
 
 <main>
+    <!-- Hero Section with banner.jpg as background image -->
+    <section class="hero">
+        <img class="hero-bg" src="src/main/images/banner.jpg" alt="Netflix Banner" onerror="this.onerror=null; this.style.display='none'; document.querySelector('.hero').style.backgroundColor='#0a0a0a';">
+        <div class="hero-content">
+            <h1>Unlimited Movies, TV Shows, and More</h1>
+            <p>Watch anywhere. Cancel anytime.</p>
+            <button class="cta-button">Watch Now For Free</button>
+        </div>
+    </section>
 
-<!-- HERO SECTION -->
-<section class="hero">
-    <div class="hero-content">
-        <h1>Unlimited Movies, TV Shows, and More</h1>
-        <p>Watch anywhere. Cancel anytime.</p>
-        <button class="cta-button">▶ Play</button>
-    </div>
-</section>
+    <!-- Trending Now Row -->
+    <section class="movie-row">
+        <h2>Trending Now</h2>
+        <div class="movie-grid" id="trendingGrid">
+            <!-- Card 1: The Crown with movie1.jpg -->
+            <div class="movie-card">
+                <img src="src/main/images/movie1.jpg" alt="The Crown" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=The+Crown'">
+                <div class="movie-info">
+                    <h3>The Crown</h3>
+                    <p>Drama • 2023</p>
+                </div>
+            </div>
+            <!-- Card 2: Stranger Things with movie2.jpg -->
+            <div class="movie-card">
+                <img src="src/main/images/movie2.jpg" alt="Stranger Things" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Stranger+Things'">
+                <div class="movie-info">
+                    <h3>Stranger Things</h3>
+                    <p>Sci-Fi • 2022</p>
+                </div>
+            </div>
+            <!-- Card 3: The Witcher with movie3.jpg -->
+            <div class="movie-card">
+                <img src="src/main/images/movie3.jpg" alt="The Witcher" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=The+Witcher'">
+                <div class="movie-info">
+                    <h3>The Witcher</h3>
+                    <p>Fantasy • 2023</p>
+                </div>
+            </div>
+            <!-- Extra cards to simulate real Netflix horizontal scroll (more realistic) -->
+            <div class="movie-card">
+                <img src="src/main/images/movie1.jpg" alt="Dark" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Dark'">
+                <div class="movie-info">
+                    <h3>Dark</h3>
+                    <p>Mystery • 2020</p>
+                </div>
+            </div>
+            <div class="movie-card">
+                <img src="src/main/images/movie2.jpg" alt="Ozark" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Ozark'">
+                <div class="movie-info">
+                    <h3>Ozark</h3>
+                    <p>Crime • 2022</p>
+                </div>
+            </div>
+            <div class="movie-card">
+                <img src="src/main/images/movie3.jpg" alt="The Queen's Gambit" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Queen+Gambit'">
+                <div class="movie-info">
+                    <h3>Queen's Gambit</h3>
+                    <p>Drama • 2020</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- TRENDING -->
-<section class="movie-row">
-    <h2>Trending Now</h2>
-    <div class="movie-grid">
-        <div class="movie-card">
-            <img src="images/movie1.jpg" alt="Movie 1">
+    <!-- Popular on Netflix Row -->
+    <section class="movie-row">
+        <h2>Popular on Netflix</h2>
+        <div class="movie-grid" id="popularGrid">
+            <!-- Wednesday with movie1.jpg (as per requirement but show Wednesday) -->
+            <div class="movie-card">
+                <img src="src/main/images/movie1.jpg" alt="Wednesday" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Wednesday'">
+                <div class="movie-info">
+                    <h3>Wednesday</h3>
+                    <p>Comedy • 2022</p>
+                </div>
+            </div>
+            <!-- Money Heist with movie2.jpg -->
+            <div class="movie-card">
+                <img src="src/main/images/movie2.jpg" alt="Money Heist" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Money+Heist'">
+                <div class="movie-info">
+                    <h3>Money Heist</h3>
+                    <p>Action • 2021</p>
+                </div>
+            </div>
+            <!-- Bridgerton with movie3.jpg -->
+            <div class="movie-card">
+                <img src="src/main/images/movie3.jpg" alt="Bridgerton" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Bridgerton'">
+                <div class="movie-info">
+                    <h3>Bridgerton</h3>
+                    <p>Romance • 2022</p>
+                </div>
+            </div>
+            <!-- extra popular titles to enhance netflix-like scroll -->
+            <div class="movie-card">
+                <img src="src/main/images/movie2.jpg" alt="Squid Game" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Squid+Game'">
+                <div class="movie-info">
+                    <h3>Squid Game</h3>
+                    <p>Thriller • 2021</p>
+                </div>
+            </div>
+            <div class="movie-card">
+                <img src="src/main/images/movie3.jpg" alt="The Crown" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=The+Crown'">
+                <div class="movie-info">
+                    <h3>The Crown</h3>
+                    <p>Drama • 2023</p>
+                </div>
+            </div>
+            <div class="movie-card">
+                <img src="src/main/images/movie1.jpg" alt="You" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=You'">
+                <div class="movie-info">
+                    <h3>You</h3>
+                    <p>Psychological • 2023</p>
+                </div>
+            </div>
         </div>
-        <div class="movie-card">
-            <img src="images/movie2.jpg" alt="Movie 2">
-        </div>
-        <div class="movie-card">
-            <img src="images/movie3.jpg" alt="Movie 3">
-        </div>
-    </div>
-</section>
-
-<!-- POPULAR -->
-<section class="movie-row">
-    <h2>Popular on Netflix</h2>
-    <div class="movie-grid">
-        <div class="movie-card">
-            <img src="images/movie1.jpg" alt="Movie 1">
-        </div>
-        <div class="movie-card">
-            <img src="images/movie2.jpg" alt="Movie 2">
-        </div>
-        <div class="movie-card">
-            <img src="images/movie3.jpg" alt="Movie 3">
-        </div>
-    </div>
-</section>
-
+    </section>
 </main>
 
 <footer>
-    <p>Netflix Clone UI</p>
+    <p>&copy; 2024 Netflix Clone. All rights reserved.</p>
+    <p style="margin-top: 10px; font-size: 0.7rem;">Made with 🎬 for streaming vibes</p>
 </footer>
 
+<!-- optional small script for slider grab effect & header transparency on scroll (Netflix style) -->
+<script>
+    (function() {
+        // 1) Header background darken on scroll (Netflix effect)
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.style.backgroundColor = '#141414';
+                header.style.backgroundImage = 'none';
+            } else {
+                header.style.backgroundColor = 'transparent';
+                header.style.backgroundImage = 'linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 50%, transparent 100%)';
+            }
+        });
+        
+        // 2) Grab-to-scroll functionality for horizontal movie rows (Netflix-like drag)
+        const sliders = document.querySelectorAll('.movie-grid');
+        
+        sliders.forEach(slider => {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                slider.style.cursor = 'grabbing';
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+                e.preventDefault();
+            });
+            
+            slider.addEventListener('mouseleave', () => {
+                isDown = false;
+                slider.style.cursor = 'grab';
+            });
+            
+            slider.addEventListener('mouseup', () => {
+                isDown = false;
+                slider.style.cursor = 'grab';
+            });
+            
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 1.5; // scroll speed multiplier
+                slider.scrollLeft = scrollLeft - walk;
+            });
+            
+            slider.style.cursor = 'grab';
+        });
+        
+        // 3) Add click effect on movie cards (optional, just for demo)
+        const cards = document.querySelectorAll('.movie-card');
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const title = card.querySelector('.movie-info h3')?.innerText || 'Movie';
+                console.log(`Clicked on ${title} - playing soon!`);
+                // subtle alert-free experience - you could enhance with modal, but we mimic netflix selection
+                // For UI flair, just a ripple style but we keep clean
+            });
+        });
+        
+        // 4) small protection: ensure banner image path works, but in case banner.jpg not exist, we add backup color
+        const bannerImg = document.querySelector('.hero-bg');
+        if (bannerImg) {
+            bannerImg.addEventListener('error', function() {
+                this.style.display = 'none';
+                const heroSection = document.querySelector('.hero');
+                if (heroSection) {
+                    heroSection.style.background = 'linear-gradient(77deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 100%), url(https://assets.nflxext.com/ffe/siteui/vlv3/9d3533b2-3e7d-4b4d-b7b2-5c45d3e9e9b6/hero-background.jpg)';
+                    heroSection.style.backgroundSize = 'cover';
+                    heroSection.style.backgroundPosition = 'center';
+                }
+            });
+        }
+        
+        // 5) intersect observer for subtle lazy feel but images already lazy, fine.
+        // Additional feature: add top gradient fix
+        window.dispatchEvent(new Event('scroll'));
+    })();
+</script>
+
+<!-- Note: images are loaded from "src/main/images/" folder as per requirement:
+     banner.jpg, movie1.jpg, movie2.jpg, movie3.jpg.
+     The code references these exact paths. 
+     For better visual, we used horizontal scrolling rows exactly like Netflix homepage.
+     Background and hover transitions replicate original Netflix UI/UX. -->
 </body>
 </html>
